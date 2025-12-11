@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB · Panel Admin</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="home-body">
+
+  <div class="home-logo-circle">
+    <img src="icons/ab-logo-circle.png" class="home-logo-img">
+  </div>
+
+  <h2 class="welcome-text">Panel Administrador</h2>
+
+  <h3 style="margin-top:25px;">Empleados</h3>
+  <div id="employeeList" class="admin-list"></div>
+
+  <div class="button-group">
+    <button class="action-btn" onclick="createUser()">Agregar empleado</button>
+    <button class="action-btn" onclick="changeAdmin()">Cambiar admin</button>
+    <button class="action-btn" onclick="logout()">Cerrar sesión</button>
+  </div>
+
+  <script src="firebase.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

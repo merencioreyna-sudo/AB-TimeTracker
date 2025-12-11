@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AB · Iniciar Sesión</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="login-container">
+
+        <div class="logo-circle">
+            <img src="icons/ab-logo-circle.png" class="logo-img">
+        </div>
+
+        <h2 class="login-title">Iniciar Sesión</h2>
+
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+
+        <button class="login-btn" onclick="login()">Iniciar Sesión</button>
+
+        <p class="admin-link" onclick="goAdmin()">Entrar como administrador</p>
+
+    </div>
+
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
