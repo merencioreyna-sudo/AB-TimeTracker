@@ -1,28 +1,15 @@
-import { auth } from "./firebase.js";
-import { signInWithEmailAndPassword } 
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// --- LOGIN ---
-const loginForm = document.getElementById("loginForm");
+const firebaseConfig = {
+  apiKey: "AIzaSyBHz_JHDItRfyOI9wx-RhHgFqVNrQeN_ks",
+  authDomain: "ab-timetracker.firebaseapp.com",
+  projectId: "ab-timetracker",
+  storageBucket: "ab-timetracker.appspot.com",
+  messagingSenderId: "1054161107782",
+  appId: "1:1054161107782:web:9f624494525cc969778347"
+};
 
-if (loginForm) {
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+const app = initializeApp(firebaseConfig);
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Si es admin
-                if (email === "admin@americanbestfilling.com") {
-                    window.location.href = "admin.html";
-                } else {
-                    window.location.href = "home.html";
-                }
-            })
-            .catch(() => {
-                alert("Correo o contraseña incorrectos");
-            });
-    });
-}
+export const auth = getAuth(app);
