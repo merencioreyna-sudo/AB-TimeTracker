@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB · Panel del Empleado</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="home-body">
+
+  <!-- LOGO -->
+  <div class="home-logo-circle">
+    <img src="icons/ab-logo-circle.png" class="home-logo-img">
+  </div>
+
+  <h2 class="welcome-text">Bienvenido</h2>
+  <p id="userName" class="user-email">Empleado</p>
+
+  <!-- ESTADO DEL EMPLEADO -->
+  <div class="status-box">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Fuera de línea</span>
+  </div>
+
+  <!-- BOTONES -->
+  <div class="button-group">
+    <button class="action-btn" onclick="startWork()">Iniciar Jornada</button>
+    <button class="action-btn" onclick="startBreak()">Descanso</button>
+    <button class="action-btn" onclick="resumeWork()">Reanudar</button>
+    <button class="action-btn" onclick="endWork()">Finalizar Jornada</button>
+  </div>
+
+  <!-- HORAS DEL DÍA -->
+  <div class="hours-box">
+    <h3>Horas de hoy:</h3>
+    <p id="hoursToday">0.00 hrs</p>
+  </div>
+
+  <script src="firebase.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
