@@ -16,17 +16,20 @@
 
         <h2 class="login-title">Iniciar Sesión</h2>
 
-        <input type="email" id="email" placeholder="Correo electrónico">
-        <input type="password" id="password" placeholder="Contraseña">
+        <!-- FORMULARIO REAL PARA FIREBASE -->
+        <form id="loginForm">
 
-        <button class="login-btn" onclick="login()">Iniciar Sesión</button>
+            <input type="email" id="email" placeholder="Correo electrónico" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
 
-        <p class="admin-link" onclick="goAdmin()">Entrar como administrador</p>
+            <button type="submit" class="login-btn">Ingresar</button>
+
+        </form>
 
     </div>
 
-    <script src="firebase.js"></script>
-    <script src="app.js"></script>
+    <script src="firebase.js" type="module"></script>
+    <script src="app.js" type="module"></script>
 
 </body>
 </html>
