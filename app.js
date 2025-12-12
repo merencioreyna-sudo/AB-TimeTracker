@@ -1,7 +1,22 @@
-/******************************
+/********************************
+ * IMPORTS FIREBASE MODULAR
+ ********************************/
+import { auth, db } from "./firebase-config.js";
+import { 
+    signInWithEmailAndPassword,
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+    doc, setDoc, getDoc, 
+    collection, getDocs 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/********************************
  * LOGIN
- ******************************/
+ ********************************/
 const loginForm = document.getElementById("loginForm");
+
 if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -10,10 +25,10 @@ if (loginForm) {
         const password = document.getElementById("password").value.trim();
 
         try {
-            await auth.signInWithEmailAndPassword(email, password);
+            await signInWithEmailAndPassword(auth, email, password);
 
             // Guardar estado online
-            await db.collection("users").doc(email).set({
+            await setDoc(doc(db, "users", email), {
                 email: email,
                 estado: "online"
             }, { merge: true });
@@ -31,30 +46,33 @@ if (loginForm) {
     });
 }
 
-/******************************
- * REGISTRO DE HORAS - EMPLEADO
- ******************************/
-const user = auth.currentUser;
-auth.onAuthStateChanged(async (user) => {
+/********************************
+ * DETECTAR USUARIO LOGUEADO
+ ********************************/
+onAuthStateChanged(auth, async (user) => {
     if (!user) return;
 
     const email = user.email;
-    const hoy = obtenerFecha();
-
-    if (document.body.contains(document.getElementById("statusLabel"))) {
-        document.getElementById("statusLabel").innerText = "En línea";
+    if (document.getElementById("statusLabel")) {
+        document.getElementById("statusLabel").textContent = "En línea";
     }
 
     cargarHistorialEmpleado(email);
 });
 
-/* Obtener fecha YYYY-MM-DD */
+/********************************
+ * UTILIDADES
+ ********************************/
 function obtenerFecha() {
     const f = new Date();
-    return `${f.getFullYear()}-${(f.getMonth()+1).toString().padStart(2,'0')}-${f.getDate().toString().padStart(2,'0')}`;
+    return `${f.getFullYear()}-${(f.getMonth()+1)
+        .toString().padStart(2, '0')}-${f.getDate()
+        .toString().padStart(2, '0')}`;
 }
 
-/* Guardar acción */
+/********************************
+ * GUARDAR ACCIÓN (ENTRADA ETC.)
+ ********************************/
 async function guardarAccion(tipo) {
     const user = auth.currentUser;
     if (!user) return;
@@ -63,42 +81,35 @@ async function guardarAccion(tipo) {
     const fecha = obtenerFecha();
     const hora = new Date().toLocaleTimeString();
 
-    await db.collection("registros")
-        .doc(email)
-        .collection("dias")
-        .doc(fecha)
-        .set({
-            [tipo]: hora
-        }, { merge: true });
+    await setDoc(doc(db, "registros", email, "dias", fecha), {
+        [tipo]: hora
+    }, { merge: true });
 
     cargarHistorialEmpleado(email);
 }
 
-/* Botones del empleado */
-function marcarEntrada() { guardarAccion("entrada"); }
-function marcarDescanso() { guardarAccion("descanso"); }
-function marcarRegreso() { guardarAccion("regreso"); }
-function marcarSalida() { guardarAccion("salida"); }
+/* Botones empleado */
+window.marcarEntrada = () => guardarAccion("entrada");
+window.marcarDescanso = () => guardarAccion("descanso");
+window.marcarRegreso  = () => guardarAccion("regreso");
+window.marcarSalida   = () => guardarAccion("salida");
 
-/******************************
- * HISTORIAL DEL EMPLEADO
- ******************************/
+/********************************
+ * HISTORIAL EMPLEADO
+ ********************************/
 async function cargarHistorialEmpleado(email) {
     const contenedor = document.getElementById("historyList");
     if (!contenedor) return;
 
-    const dias = await db.collection("registros")
-        .doc(email)
-        .collection("dias")
-        .get();
+    const diasSnap = await getDocs(collection(db, "registros", email, "dias"));
 
     contenedor.innerHTML = "";
 
-    dias.forEach(doc => {
-        const data = doc.data();
+    diasSnap.forEach((docu) => {
+        const data = docu.data();
         contenedor.innerHTML += `
             <div class="history-item">
-                <strong>${doc.id}</strong><br>
+                <strong>${docu.id}</strong><br>
                 Entrada: ${data.entrada || "-"}<br>
                 Descanso: ${data.descanso || "-"}<br>
                 Regreso: ${data.regreso || "-"}<br>
@@ -108,19 +119,19 @@ async function cargarHistorialEmpleado(email) {
     });
 }
 
-/******************************
+/********************************
  * ADMIN - CARGAR EMPLEADOS
- ******************************/
+ ********************************/
 async function cargarEmpleadosAdmin() {
     const lista = document.getElementById("employeeList");
     if (!lista) return;
 
-    const empleados = await db.collection("users").get();
+    const usersSnap = await getDocs(collection(db, "users"));
 
     lista.innerHTML = "";
 
-    empleados.forEach(doc => {
-        const data = doc.data();
+    usersSnap.forEach((docu) => {
+        const data = docu.data();
         lista.innerHTML += `
             <div class="employee-card">
                 <strong>${data.email}</strong><br>
@@ -133,25 +144,22 @@ async function cargarEmpleadosAdmin() {
     });
 }
 
-/******************************
- * ADMIN - VER HISTORIAL POR EMPLEADO
- ******************************/
+/********************************
+ * ADMIN - VER HISTORIAL
+ ********************************/
 async function verHistorialAdmin(email) {
     const contenedor = document.getElementById("adminHistory");
     contenedor.innerHTML = `<h3>Cargando historial de ${email}...</h3>`;
 
-    const dias = await db.collection("registros")
-        .doc(email)
-        .collection("dias")
-        .get();
+    const diasSnap = await getDocs(collection(db, "registros", email, "dias"));
 
     contenedor.innerHTML = `<h3>${email}</h3>`;
 
-    dias.forEach(doc => {
-        const data = doc.data();
+    diasSnap.forEach((docu) => {
+        const data = docu.data();
         contenedor.innerHTML += `
             <div class="history-item">
-                <strong>${doc.id}</strong><br>
+                <strong>${docu.id}</strong><br>
                 Entrada: ${data.entrada || "-"}<br>
                 Descanso: ${data.descanso || "-"}<br>
                 Regreso: ${data.regreso || "-"}<br>
@@ -161,11 +169,13 @@ async function verHistorialAdmin(email) {
     });
 }
 
-/******************************
- * AUTO EJECUCIÓN PARA ADMIN
- ******************************/
+window.verHistorialAdmin = verHistorialAdmin;
+
+/********************************
+ * AUTOEJECUCIÓN ADMIN
+ ********************************/
 if (window.location.pathname.includes("admin.html")) {
-    auth.onAuthStateChanged((u) => {
-        if (u) cargarEmpleadosAdmin();
+    onAuthStateChanged(auth, (user) => {
+        if (user) cargarEmpleadosAdmin();
     });
 }
