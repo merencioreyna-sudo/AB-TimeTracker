@@ -1,31 +1,34 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AB · Panel Admin</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AB · Iniciar Sesión</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase COMPAT (100% funcionando en GitHub Pages) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 
-<body class="home-body">
+<body>
 
-  <div class="home-logo-circle">
-    <img src="icons/ab-logo-circle.png" class="home-logo-img">
-  </div>
+    <div class="login-container">
+        <div class="logo-circle">
+            <img src="icons/ab-logo-circle.png" class="logo-img">
+        </div>
 
-  <h2 class="welcome-text">Panel Administrador</h2>
+        <h2 class="login-title">Iniciar Sesión</h2>
 
-  <h3 style="margin-top:25px;">Empleados</h3>
-  <div id="employeeList" class="admin-list"></div>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Correo electrónico" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="submit" class="login-btn">Ingresar</button>
+        </form>
+    </div>
 
-  <div class="button-group">
-    <button class="action-btn" onclick="createUser()">Agregar empleado</button>
-    <button class="action-btn" onclick="changeAdmin()">Cambiar admin</button>
-    <button class="action-btn" onclick="logout()">Cerrar sesión</button>
-  </div>
-
-  <script src="firebase.js"></script>
-  <script src="app.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
 
 </body>
 </html>
