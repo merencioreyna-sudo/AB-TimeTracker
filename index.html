@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AB · Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDK modo clásico (funciona SIEMPRE en GitHub Pages) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
 </head>
+
 <body>
 
     <div class="login-container">
@@ -16,19 +21,16 @@
 
         <h2 class="login-title">Iniciar Sesión</h2>
 
-        <!-- FORMULARIO REAL PARA FIREBASE -->
         <form id="loginForm">
-
             <input type="email" id="email" placeholder="Correo electrónico" required>
             <input type="password" id="password" placeholder="Contraseña" required>
-
             <button type="submit" class="login-btn">Ingresar</button>
-
         </form>
 
     </div>
 
-    <script src="app.js" type="module"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
 
 </body>
 </html>

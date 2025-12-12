@@ -1,28 +1,25 @@
-import { auth } from "./firebase-config.js";
-import { signInWithEmailAndPassword } 
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+const form = document.getElementById("loginForm");
 
-// --- LOGIN ---
-const loginForm = document.getElementById("loginForm");
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-if (loginForm) {
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
 
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Si es admin
-                if (email === "admin@americanbestfilling.com") {
-                    window.location.href = "admin.html";
-                } else {
-                    window.location.href = "home.html";
-                }
-            })
-            .catch(() => {
-                alert("Correo o contraseña incorrectos");
-            });
-    });
-}
+            // Admin
+            if (email === "admin@americanbestfilling.com") {
+                window.location.href = "admin.html";
+            } 
+            // Empleado
+            else {
+                window.location.href = "home.html";
+            }
+        })
+        .catch((error) => {
+            alert("Correo o contraseña incorrectos");
+            console.error(error);
+        });
+});
