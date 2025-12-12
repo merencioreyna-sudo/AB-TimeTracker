@@ -1,44 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AB · Panel del Empleado</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleado · AB-TimeTracker</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase COMPAT -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 
-<body class="home-body">
+<body>
 
-  <!-- LOGO -->
-  <div class="home-logo-circle">
-    <img src="icons/ab-logo-circle.png" class="home-logo-img">
-  </div>
+    <div class="header">Panel del Empleado</div>
 
-  <h2 class="welcome-text">Bienvenido</h2>
-  <p id="userName" class="user-email">Empleado</p>
+    <div class="section">
+        <p><strong>Estado:</strong> <span id="statusLabel">Desconectado</span></p>
 
-  <!-- ESTADO DEL EMPLEADO -->
-  <div class="status-box">
-      <span class="status-dot" id="statusDot"></span>
-      <span id="statusText">Fuera de línea</span>
-  </div>
+        <button class="btn-action" onclick="marcarEntrada()">Marcar Entrada</button>
+        <button class="btn-action" onclick="marcarDescanso()">Marcar Descanso</button>
+        <button class="btn-action" onclick="marcarRegreso()">Marcar Regreso</button>
+        <button class="btn-action" onclick="marcarSalida()">Marcar Salida</button>
+    </div>
 
-  <!-- BOTONES -->
-  <div class="button-group">
-    <button class="action-btn" onclick="startWork()">Iniciar Jornada</button>
-    <button class="action-btn" onclick="startBreak()">Descanso</button>
-    <button class="action-btn" onclick="resumeWork()">Reanudar</button>
-    <button class="action-btn" onclick="endWork()">Finalizar Jornada</button>
-  </div>
+    <div class="section">
+        <h2 class="admin-section-title">Historial Diario</h2>
+        <div id="historyList"></div>
+    </div>
 
-  <!-- HORAS DEL DÍA -->
-  <div class="hours-box">
-    <h3>Horas de hoy:</h3>
-    <p id="hoursToday">0.00 hrs</p>
-  </div>
-
-  <script src="firebase.js"></script>
-  <script src="app.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
 
 </body>
 </html>

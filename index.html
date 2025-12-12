@@ -9,9 +9,10 @@
     <!-- Firebase COMPAT (FUNCIONA EN GITHUB PAGES) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 
-<body>
+<body class="login-body">
 
     <div class="login-container">
 
@@ -21,9 +22,10 @@
 
         <h2 class="login-title">Iniciar Sesión</h2>
 
-        <form id="loginForm">
+        <form id="loginForm" class="login-form">
             <input type="email" id="email" placeholder="Correo electrónico" required>
             <input type="password" id="password" placeholder="Contraseña" required>
+
             <button type="submit" class="login-btn">Ingresar</button>
         </form>
 

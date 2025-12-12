@@ -1,158 +1,126 @@
-/* ====== ESTILOS GENERALES ====== */
+/* GENERAL */
 body {
-  margin: 0;
-  background-color: #000;
-  font-family: Arial, sans-serif;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
 }
 
-h2, h3 {
-  color: #d4a63f;
+/* LOGIN */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-/* ====== LOGIN ====== */
 .login-container {
-  width: 90%;
-  max-width: 350px;
-  text-align: center;
+    width: 90%;
+    max-width: 380px;
+    padding: 30px;
+    background-color: #111;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid #a67c00; /* dorado */
 }
 
-.logo-circle, .home-logo-circle {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 20px auto;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f8e29a, #d4a63f, #a1751d);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.logo-circle {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 15px auto;
 }
 
-.logo-img, .home-logo-img {
-  width: 75px;
+.logo-img {
+    width: 100%;
 }
 
 .login-title {
-  margin-bottom: 15px;
-  font-size: 22px;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #d4af37; /* dorado metálico */
 }
 
-input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: 1px solid #d4a63f;
-  background-color: #111;
-  color: #fff;
+.login-form input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px auto;
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    display: block;
 }
 
 .login-btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, #f8e29a, #d4a63f, #a1751d);
-  color: #000;
+    width: 90%;
+    padding: 12px;
+    margin-top: 15px;
+    background-color: #d4af37;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.admin-link {
-  margin-top: 15px;
-  color: #d4a63f;
-  cursor: pointer;
-  text-decoration: underline;
+.login-btn:hover {
+    background-color: #bfa133;
 }
 
-/* ====== PANTALLA EMPLEADO ====== */
-.home-body {
-  background-color: #000;
-  color: #fff;
-  text-align: center;
-  padding-top: 40px;
+/* HOME (Empleado) */
+.header {
+    padding: 15px;
+    background-color: #111;
+    border-bottom: 1px solid #d4af37;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
 }
 
-.welcome-text {
-  font-size: 24px;
-  margin-top: 15px;
+.section {
+    padding: 20px;
 }
 
-.user-email {
-  opacity: 0.8;
-  font-size: 16px;
+.btn-action {
+    display: block;
+    width: 90%;
+    margin: 12px auto;
+    padding: 15px;
+    background-color: #d4af37;
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.status-box {
-  margin-top: 25px;
-  font-size: 18px;
+.history-item {
+    background-color: #111;
+    border: 1px solid #444;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
 }
 
-.status-dot {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  margin-right: 8px;
-  background-color: red;
+/* ADMIN */
+.admin-section-title {
+    color: #d4af37;
+    font-size: 22px;
+    text-align: center;
+    margin-top: 20px;
 }
 
-.button-group {
-  width: 90%;
-  max-width: 350px;
-  margin: 30px auto;
+.employee-list {
+    padding: 10px;
 }
 
-.action-btn {
-  width: 100%;
-  padding: 14px;
-  margin: 7px 0;
-  border: none;
-  border-radius: 8px;
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
-  background: linear-gradient(135deg, #f8e29a, #d4a63f, #a1751d);
-  color: #000;
-}
-
-/* ====== HORAS ====== */
-.hours-box {
-  margin-top: 20px;
-}
-
-/* ====== PANEL ADMIN ====== */
-.admin-list {
-  width: 90%;
-  max-width: 350px;
-  margin: 0 auto;
-  background-color: #111;
-  border: 1px solid #d4a63f;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: left;
-}
-
-.admin-user-item {
-  padding: 10px;
-  border-bottom: 1px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.admin-user-name {
-  color: #fff;
-}
-
-.admin-user-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
+.employee-card {
+    background-color: #111;
+    padding: 15px;
+    border: 1px solid #444;
+    margin: 10px;
+    border-radius: 10px;
 }
