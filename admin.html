@@ -5,29 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin · AB-TimeTracker</title>
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Firebase COMPAT -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
-
 <body>
 
-    <div class="header">Panel de Administración</div>
+    <h2>Panel de Administración</h2>
 
-    <div class="section">
-        <h2 class="admin-section-title">Empleados</h2>
-        <div id="employeeList" class="employee-list"></div>
-    </div>
+    <h3>Lista de empleados</h3>
+    <div id="employeeList"></div>
 
-    <div class="section">
-        <h2 class="admin-section-title">Historial Seleccionado</h2>
-        <div id="adminHistory"></div>
-    </div>
+    <h3>Historial del empleado seleccionado</h3>
+    <div id="adminHistory"></div>
 
-    <script src="firebase.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="supabase.js"></script>
+    <script type="module" src="app.js"></script>
 
 </body>
 </html>
