@@ -1,103 +1,168 @@
-/* =============================
-   ESTILO GLOBAL PREMIUM
-   NEGRO + DORADO METÁLICO
-============================= */
+/* =======================
+   ESTILOS GENERALES
+======================= */
+
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #000;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+    background: #0e0e0e;
     color: #fff;
 }
 
-/* Contenedor centrado */
-.container {
-    width: 95%;
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #0d0d0d;
-    border-radius: 14px;
-    border: 1px solid rgba(212,175,55,0.4);
-    box-shadow: 0 0 20px rgba(212,175,55,0.15);
+/* Contenedor principal del dashboard */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
 }
 
-/* Títulos */
-h1, h2, h3 {
-    color: #D4AF37;
-    font-weight: 600;
+/* =======================
+   BARRA LATERAL
+======================= */
+
+.sidebar {
+    width: 250px;
+    background: #141414;
+    border-right: 1px solid #2b2b2b;
+    padding: 20px;
 }
 
-/* Inputs */
-input {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    border-radius: 10px;
-    margin-top: 10px;
+.sidebar h2 {
+    font-weight: 700;
     margin-bottom: 20px;
-    background: #111;
-    border: 1px solid #333;
-    color: #fff;
+    color: #d4af37;
 }
 
-input:focus {
-    outline: none;
-    border-color: #D4AF37;
-    box-shadow: 0 0 10px rgba(212,175,55,0.3);
-}
-
-/* Botón premium */
-button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 5px;
-    border: none;
-    border-radius: 10px;
-    font-size: 17px;
-    font-weight: bold;
-    color: #000;
+.nav-item {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
     cursor: pointer;
-    background: linear-gradient(45deg, #D4AF37, #C9A227, #E0C16D);
-    transition: 0.2s;
+    background: #1b1b1b;
+    transition: 0.2s ease-in-out;
 }
 
-button:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 15px rgba(212,175,55,0.5);
+.nav-item:hover {
+    background: #d4af37;
+    color: black;
 }
 
-/* Tarjetas */
-.card {
-    background: #111;
-    padding: 18px;
+/* =======================
+   CONTENIDO PRINCIPAL
+======================= */
+
+.main-content {
+    flex: 1;
+    padding: 35px;
+    overflow-y: auto;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #d4af37;
+    margin-bottom: 20px;
+}
+
+/* =======================
+   TARJETAS DE EMPLEADOS
+======================= */
+
+.employee-card {
+    background: #1a1a1a;
+    border: 1px solid #333;
     border-radius: 12px;
+    padding: 20px;
     margin-bottom: 15px;
-    border: 1px solid rgba(212,175,55,0.25);
+    transition: transform 0.2s ease;
 }
 
-.card:hover {
-    box-shadow: 0 0 12px rgba(212,175,55,0.3);
+.employee-card:hover {
+    transform: translateY(-3px);
+    border-color: #d4af37;
 }
 
-/* Etiquetas */
-.label {
-    font-size: 13px;
-    opacity: 0.7;
+.employee-card strong {
+    font-size: 18px;
 }
 
-/* Botón pequeño */
-.btn-small {
-    padding: 8px 14px;
-    width: auto;
+.status-online {
+    color: #14ff72;
+    font-weight: bold;
+}
+
+.status-offline {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+/* Botones */
+.btn {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
     margin-top: 10px;
-    background: linear-gradient(45deg, #D4AF37, #C9A227);
+    background: #d4af37;
+    color: black;
+    font-weight: 600;
+    transition: 0.2s ease;
 }
 
-/* Historial */
+.btn:hover {
+    background: #b9962f;
+}
+
+/* =======================
+   HISTORIAL (ADMIN + EMPLEADO)
+======================= */
+
 .history-box {
-    background: #0f0f0f;
-    padding: 14px;
-    border-left: 4px solid #D4AF37;
+    background: #1f1f1f;
+    padding: 15px;
     border-radius: 8px;
     margin-bottom: 10px;
+    border: 1px solid #333;
+}
+
+.history-title {
+    color: #d4af37;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* =======================
+   BOTONES GRANDES EMPLEADO
+======================= */
+
+.action-button {
+    width: 100%;
+    padding: 18px;
+    background: #d4af37;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.action-button:hover {
+    background: #b9962f;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+
+@media (max-width: 820px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
 }
