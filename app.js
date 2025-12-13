@@ -108,3 +108,16 @@ window.verHistorial = async function(email) {
 if (window.location.pathname.includes("admin.html")) {
     cargarEmpleados();
 }
+
+// ================================
+// MOSTRAR EMAIL DEL USUARIO EN SIDEBAR
+// ================================
+auth.onAuthStateChanged(user => {
+    if (user) {
+        const emailElement = document.getElementById("userEmail");
+        if (emailElement) {
+            emailElement.textContent = user.email;
+        }
+    }
+});
+
