@@ -1,3 +1,5 @@
+window.globalThis = window;
+
 import { supabase } from "./supabase.js";
 
 /******************************
