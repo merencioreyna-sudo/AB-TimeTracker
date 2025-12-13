@@ -121,3 +121,14 @@ auth.onAuthStateChanged(user => {
     }
 });
 
+// ================================
+// LOGOUT
+// ================================
+function logout() {
+    auth.signOut().then(() => {
+        window.location.href = "index.html";
+    });
+}
+
+window.logout = logout;
+
