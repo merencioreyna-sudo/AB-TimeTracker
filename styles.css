@@ -166,3 +166,13 @@ body {
         width: 100%;
     }
 }
+
+.user-email {
+    color: #d4af37;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+
