@@ -2,22 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="app.js" type="module"></script>
 </head>
 <body>
 
-<div class="container">
-    <h2>Panel de Administración</h2>
-    <h3>Lista de empleados</h3>
+<div class="dashboard-container">
 
-    <div id="employeeList"></div>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>AB Admin</h2>
+        <div class="nav-item">Empleados</div>
+        <div class="nav-item">Registros</div>
+        <div class="nav-item" onclick="logout()">Cerrar Sesión</div>
+    </div>
 
-    <h3>Historial del empleado seleccionado</h3>
-    <div id="adminHistory"></div>
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <h1 class="title">Lista de empleados</h1>
+
+        <div id="employeeList"></div>
+
+        <h2 class="history-title">Historial del empleado seleccionado</h2>
+        <div id="adminHistory"></div>
+    </div>
+
 </div>
 
-<script src="supabase.js" type="module"></script>
-<script src="app.js" type="module"></script>
 </body>
 </html>
+
