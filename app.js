@@ -125,10 +125,17 @@ auth.onAuthStateChanged(user => {
 // LOGOUT
 // ================================
 function logout() {
-    auth.signOut().then(() => {
-        window.location.href = "index.html";
-    });
+    auth.signOut()
+        .then(() => {
+            console.log("Sesión cerrada correctamente");
+            window.location.href = "index.html";
+        })
+        .catch((error) => {
+            console.error("Error cerrando sesión:", error);
+            alert("No se pudo cerrar sesión.");
+        });
 }
 
+// NECESARIO para que funcione desde el HTML
 window.logout = logout;
 
