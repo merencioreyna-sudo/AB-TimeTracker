@@ -5,14 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AB · Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Firebase COMPAT (FUNCIONA EN GITHUB PAGES) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
-
-<body class="login-body">
+<body>
 
     <div class="login-container">
         <div class="logo-circle">
@@ -21,15 +15,15 @@
 
         <h2 class="login-title">Iniciar Sesión</h2>
 
-        <form id="loginForm" class="login-form">
+        <form id="loginForm">
             <input type="email" id="email" placeholder="Correo electrónico" required>
             <input type="password" id="password" placeholder="Contraseña" required>
             <button type="submit" class="login-btn">Ingresar</button>
         </form>
     </div>
 
-    <script src="firebase.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="supabase.js"></script>
+    <script type="module" src="app.js"></script>
 
 </body>
 </html>
