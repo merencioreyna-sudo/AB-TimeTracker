@@ -2,15 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empleado · AB-TimeTracker</title>
+    <title>Panel del Empleado</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<div class="container">
     <h2>Panel del Empleado</h2>
 
-    <p><strong>Email:</strong> <span id="userEmail"></span></p>
+    <p><span class="label">Email:</span> <span id="employeeEmail"></span></p>
 
     <button onclick="marcarEntrada()">Entrada</button>
     <button onclick="marcarDescanso()">Descanso</button>
@@ -19,9 +19,9 @@
 
     <h3>Historial</h3>
     <div id="historyList"></div>
+</div>
 
-    <script type="module" src="supabase.js"></script>
-    <script type="module" src="app.js"></script>
-
+<script src="supabase.js" type="module"></script>
+<script src="app.js" type="module"></script>
 </body>
 </html>
