@@ -2,26 +2,37 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel del Empleado</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="app.js" type="module"></script>
 </head>
 <body>
 
-<div class="container">
-    <h2>Panel del Empleado</h2>
+<div class="dashboard-container">
 
-    <p><span class="label">Email:</span> <span id="employeeEmail"></span></p>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>AB Empleado</h2>
+        <div class="nav-item">Panel</div>
+        <div class="nav-item">Historial</div>
+        <div class="nav-item" onclick="logout()">Cerrar Sesión</div>
+    </div>
 
-    <button onclick="marcarEntrada()">Entrada</button>
-    <button onclick="marcarDescanso()">Descanso</button>
-    <button onclick="marcarRegreso()">Regreso</button>
-    <button onclick="marcarSalida()">Salida</button>
+    <!-- CONTENIDO -->
+    <div class="main-content">
+        <h1 class="title">Registro de jornada</h1>
 
-    <h3>Historial</h3>
-    <div id="historyList"></div>
+        <button class="action-button" onclick="marcarEntrada()">Entrada</button>
+        <button class="action-button" onclick="marcarDescanso()">Descanso</button>
+        <button class="action-button" onclick="marcarRegreso()">Regreso</button>
+        <button class="action-button" onclick="marcarSalida()">Salida</button>
+
+        <h2 class="history-title">Historial</h2>
+        <div id="historyList"></div>
+    </div>
+
 </div>
 
-<script src="supabase.js" type="module"></script>
-<script src="app.js" type="module"></script>
 </body>
 </html>
