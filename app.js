@@ -124,7 +124,7 @@ auth.onAuthStateChanged(user => {
 // ================================
 // LOGOUT
 // ================================
-function logout() {
+export function logout() {
     auth.signOut()
         .then(() => {
             console.log("Sesión cerrada correctamente");
