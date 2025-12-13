@@ -126,18 +126,16 @@ auth.onAuthStateChanged(user => {
 // ================================
 // LOGOUT
 // ================================
-export function logout() {
-    auth.signOut()
-        .then(() => {
-            console.log("Sesión cerrada correctamente");
-            window.location.href = "index.html";
-        })
-        .catch((error) => {
-            console.error("Error cerrando sesión:", error);
-            alert("No se pudo cerrar sesión.");
-        });
-}
+window.logout = async function () {
+    const { error } = await supabase.auth.signOut();
 
-// NECESARIO para que funcione desde el HTML
-window.logout = logout;
+    if (error) {
+        console.error("Error cerrando sesión:", error);
+        alert("No se pudo cerrar sesión.");
+        return;
+    }
+
+    console.log("Sesión cerrada correctamente");
+    window.location.href = "index.html";
+};
 
