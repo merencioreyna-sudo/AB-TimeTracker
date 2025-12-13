@@ -2,22 +2,22 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin · AB-TimeTracker</title>
+    <title>Panel de Administración</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<div class="container">
     <h2>Panel de Administración</h2>
-
     <h3>Lista de empleados</h3>
+
     <div id="employeeList"></div>
 
     <h3>Historial del empleado seleccionado</h3>
     <div id="adminHistory"></div>
+</div>
 
-    <script type="module" src="supabase.js"></script>
-    <script type="module" src="app.js"></script>
-
+<script src="supabase.js" type="module"></script>
+<script src="app.js" type="module"></script>
 </body>
 </html>
