@@ -2,28 +2,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AB · Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="logo-circle">
-            <img src="icons/ab-logo-circle.png" class="logo-img">
-        </div>
+<div class="container" style="text-align:center;">
+    <img src="icons/ab-logo-circle.png" width="120" style="margin-bottom:20px;">
+    <h2>Iniciar Sesión</h2>
 
-        <h2 class="login-title">Iniciar Sesión</h2>
+    <form id="loginForm">
+        <input type="email" id="email" placeholder="Correo electrónico" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+    </form>
+</div>
 
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Correo electrónico" required>
-            <input type="password" id="password" placeholder="Contraseña" required>
-            <button type="submit" class="login-btn">Ingresar</button>
-        </form>
-    </div>
-
-    <script type="module" src="supabase.js"></script>
-    <script type="module" src="app.js"></script>
-
+<script src="supabase.js" type="module"></script>
+<script src="app.js" type="module"></script>
 </body>
 </html>
