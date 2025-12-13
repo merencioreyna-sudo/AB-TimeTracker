@@ -2,23 +2,59 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>AB · Iniciar Sesión</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AB TimeTracker - Sistema de Asistencia</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.png">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Contenedor principal de la app -->
+    <div id="app">
+        <!-- Navbar se inyectará aquí -->
+        <div id="navbar-container"></div>
+        
+        <!-- Contenido dinámico se cargará aquí -->
+        <main id="content" class="container">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando aplicación...</p>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <p>AB TimeTracker &copy; 2025 - Sistema de registro de asistencia</p>
+        </footer>
+    </div>
 
-<div class="container" style="text-align:center;">
-    <img src="icons/ab-logo-circle.png" width="120" style="margin-bottom:20px;">
-    <h2>Iniciar Sesión</h2>
-
-    <form id="loginForm">
-        <input type="email" id="email" placeholder="Correo electrónico" required>
-        <input type="password" id="password" placeholder="Contraseña" required>
-        <button type="submit">Ingresar</button>
-    </form>
-</div>
-
-<script src="supabase.js" type="module"></script>
-<script src="app.js" type="module"></script>
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script type="module">
+        // Configuración base para GitHub Pages
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const repoName = window.location.pathname.split('/')[1] || 'AB-TimeTracker';
+        window.BASE_PATH = isGitHubPages ? `/${repoName}` : '';
+        
+        // Importar módulos
+        import { initRouter } from './app.js';
+        import { loadNavbar } from './components/navbar.js';
+        
+        // Inicializar aplicación
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Cargar navbar
+            await loadNavbar();
+            
+            // Inicializar router
+            initRouter();
+            
+            // Registrar service worker para PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./service-worker.js');
+            }
+        });
+    </script>
 </body>
 </html>

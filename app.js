@@ -1,141 +1,213 @@
-window.globalThis = window;
+// app.js - Router y gestión de estado global
+import { renderHome } from './views/home.js';
+import { renderAdmin } from './views/admin.js';
+import { renderAuth } from './views/auth.js';
+import { checkAuthState } from './supabase.js';
 
-import { supabase } from "./supabase.js";
+// Estado global de la aplicación
+export let currentUser = null;
+export let currentView = '';
 
-/******************************
- * LOGIN
- ******************************/
-const loginForm = document.getElementById("loginForm");
+// Configuración de rutas
+const routes = {
+    '/': {
+        title: 'Inicio - AB TimeTracker',
+        view: renderHome,
+        requiresAuth: true
+    },
+    '/login': {
+        title: 'Iniciar Sesión',
+        view: renderAuth,
+        requiresAuth: false
+    },
+    '/admin': {
+        title: 'Panel de Administración',
+        view: renderAdmin,
+        requiresAuth: true,
+        requiresAdmin: true
+    }
+};
 
-if (loginForm) {
-    loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+// Router principal
+export async function navigateTo(path) {
+    // Validar y normalizar ruta
+    if (!path.startsWith('/')) path = '/' + path;
+    
+    // Actualizar URL sin recargar
+    window.history.pushState({}, '', window.BASE_PATH + '#' + path);
+    
+    // Cargar la vista
+    await loadView(path);
+}
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
+// Cargar vista
+async function loadView(path) {
+    const route = routes[path] || routes['/'];
+    const contentEl = document.getElementById('content');
+    
+    // Verificar autenticación
+    const authState = await checkAuthState();
+    currentUser = authState.user;
+    
+    // Redirigir si necesita autenticación
+    if (route.requiresAuth && !currentUser) {
+        return navigateTo('/login');
+    }
+    
+    // Redirigir si necesita admin
+    if (route.requiresAdmin && currentUser?.email !== 'admin@example.com') {
+        alert('Acceso no autorizado. Solo administradores.');
+        return navigateTo('/');
+    }
+    
+    // Mostrar loading
+    contentEl.innerHTML = `
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+    `;
+    
+    try {
+        // Renderizar vista
+        const viewHTML = await route.view();
+        contentEl.innerHTML = viewHTML;
+        currentView = path;
+        
+        // Actualizar título
+        document.title = route.title;
+        
+        // Conectar eventos dinámicos
+        attachViewEvents(path);
+        
+    } catch (error) {
+        console.error('Error cargando vista:', error);
+        contentEl.innerHTML = `
+            <div class="error-container">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h2>Error cargando la página</h2>
+                <p>${error.message}</p>
+                <button onclick="location.reload()">Recargar</button>
+            </div>
+        `;
+    }
+}
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password
+// Conectar eventos específicos de cada vista
+function attachViewEvents(view) {
+    switch(view) {
+        case '/':
+            attachHomeEvents();
+            break;
+        case '/login':
+            attachAuthEvents();
+            break;
+        case '/admin':
+            attachAdminEvents();
+            break;
+    }
+}
+
+// Eventos para Home
+function attachHomeEvents() {
+    // Botón de registro de tiempo
+    const timeBtn = document.getElementById('register-time');
+    if (timeBtn) {
+        timeBtn.addEventListener('click', () => {
+            document.getElementById('time-modal').style.display = 'block';
         });
-
-        if (error) {
-            alert("Correo o contraseña incorrectos");
-            return;
-        }
-
-        // Redirigir según si es admin
-        if (email === "admin@americanbestfilling.com") {
-            window.location.href = "admin.html";
-        } else {
-            window.location.href = "home.html";
-        }
-    });
+    }
+    
+    // Cerrar modal
+    const closeModal = document.querySelector('.close-modal');
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            document.getElementById('time-modal').style.display = 'none';
+        });
+    }
 }
 
-/**********************************************
- * CARGAR USUARIO LOGUEADO
- **********************************************/
-supabase.auth.onAuthStateChange(async (event, session) => {
-    if (session) {
-        const email = session.user.email;
-        console.log("Usuario autenticado:", email);
+// Eventos para Auth
+function attachAuthEvents() {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Importar aquí para evitar dependencia circular
+            const { signIn } = await import('./supabase.js');
+            await signIn(email, password);
+        });
     }
+    
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            
+            const { signUp } = await import('./supabase.js');
+            await signUp(email, password);
+        });
+    }
+}
+
+// Eventos para Admin
+function attachAdminEvents() {
+    // Cargar reportes
+    setTimeout(() => {
+        loadAdminReports();
+    }, 500);
+}
+
+// Cargar reportes de admin
+async function loadAdminReports() {
+    try {
+        const { getTimeRecords } = await import('./supabase.js');
+        const records = await getTimeRecords();
+        
+        const tableBody = document.getElementById('records-table-body');
+        if (tableBody && records) {
+            tableBody.innerHTML = records.map(record => `
+                <tr>
+                    <td>${record.user_email}</td>
+                    <td>${new Date(record.check_in).toLocaleString()}</td>
+                    <td>${record.check_out ? new Date(record.check_out).toLocaleString() : 'En curso'}</td>
+                    <td>${record.total_hours || '--'}</td>
+                    <td><span class="status-badge ${record.status}">${record.status}</span></td>
+                </tr>
+            `).join('');
+        }
+    } catch (error) {
+        console.error('Error cargando reportes:', error);
+    }
+}
+
+// Manejar navegación con botones de atrás/adelante
+window.addEventListener('popstate', () => {
+    const path = window.location.hash.replace('#', '') || '/';
+    loadView(path);
 });
 
-/**********************************************
- * EMPLEADO: REGISTRO DE HORAS
- **********************************************/
-async function registrarAccion(tipo) {
-    const { data: sessionData } = await supabase.auth.getSession();
-    const email = sessionData.session.user.email;
-
-    await supabase.from("work_logs").insert({
-        employee_email: email,
-        action: tipo
-    });
-
-    alert("Marcado correctamente: " + tipo);
-}
-
-// Botones
-window.marcarEntrada = () => registrarAccion("entrada");
-window.marcarDescanso = () => registrarAccion("descanso");
-window.marcarRegreso = () => registrarAccion("regreso");
-window.marcarSalida = () => registrarAccion("salida");
-
-/**********************************************
- * ADMIN: VER EMPLEADOS
- **********************************************/
-async function cargarEmpleados() {
-    const lista = document.getElementById("employeeList");
-    if (!lista) return;
-
-    const { data, error } = await supabase.from("employees").select("*");
-
-    lista.innerHTML = "";
-
-    data.forEach(emp => {
-        lista.innerHTML += `
-            <div class="employee-card">
-                <strong>${emp.email}</strong><br>
-                Estado: ${emp.status}<br>
-                <button onclick="verHistorial('${emp.email}')">Ver historial</button>
-            </div>
-        `;
-    });
-}
-
-window.verHistorial = async function(email) {
-    const cont = document.getElementById("adminHistory");
-
-    const { data } = await supabase
-        .from("work_logs")
-        .select("*")
-        .eq("employee_email", email);
-
-    cont.innerHTML = `<h3>Historial de ${email}</h3>`;
-
-    data.forEach(r => {
-        cont.innerHTML += `
-            <div class="history-item">
-                Acción: ${r.action}<br>
-                Hora: ${r.action_time}
-            </div>
-        `;
-    });
-};
-
-// Auto cargar si es admin
-if (window.location.pathname.includes("admin.html")) {
-    cargarEmpleados();
-}
-
-// ================================
-// MOSTRAR EMAIL DEL USUARIO EN SIDEBAR
-// ================================
-auth.onAuthStateChanged(user => {
-    if (user) {
-        const emailElement = document.getElementById("userEmail");
-        if (emailElement) {
-            emailElement.textContent = user.email;
+// Inicializar router
+export function initRouter() {
+    // Cargar vista inicial basada en hash
+    const initialPath = window.location.hash.replace('#', '') || '/';
+    loadView(initialPath);
+    
+    // Interceptar clicks en enlaces
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[data-link]');
+        if (link) {
+            e.preventDefault();
+            const path = link.getAttribute('href');
+            navigateTo(path);
         }
-    }
-});
+    });
+}
 
-// ================================
-// LOGOUT
-// ================================
-window.logout = async function () {
-    const { error } = await supabase.auth.signOut();
-
-    if (error) {
-        console.error("Error cerrando sesión:", error);
-        alert("No se pudo cerrar sesión.");
-        return;
-    }
-
-    console.log("Sesión cerrada correctamente");
-    window.location.href = "index.html";
-};
-
+// Exportar función de navegación globalmente
+window.navigateTo = navigateTo;
