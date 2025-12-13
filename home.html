@@ -5,33 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleado · AB-TimeTracker</title>
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Firebase COMPAT -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
-
 <body>
 
-    <div class="header">Panel del Empleado</div>
+    <h2>Panel del Empleado</h2>
 
-    <div class="section">
-        <p><strong>Estado:</strong> <span id="statusLabel">Desconectado</span></p>
+    <p><strong>Email:</strong> <span id="userEmail"></span></p>
 
-        <button class="btn-action" onclick="marcarEntrada()">Marcar Entrada</button>
-        <button class="btn-action" onclick="marcarDescanso()">Marcar Descanso</button>
-        <button class="btn-action" onclick="marcarRegreso()">Marcar Regreso</button>
-        <button class="btn-action" onclick="marcarSalida()">Marcar Salida</button>
-    </div>
+    <button onclick="marcarEntrada()">Entrada</button>
+    <button onclick="marcarDescanso()">Descanso</button>
+    <button onclick="marcarRegreso()">Regreso</button>
+    <button onclick="marcarSalida()">Salida</button>
 
-    <div class="section">
-        <h2 class="admin-section-title">Historial Diario</h2>
-        <div id="historyList"></div>
-    </div>
+    <h3>Historial</h3>
+    <div id="historyList"></div>
 
-    <script src="firebase.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="supabase.js"></script>
+    <script type="module" src="app.js"></script>
 
 </body>
 </html>
