@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factura Premium · SaaS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f4f7fc;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      margin: 0;
+      color: #1e1e2a;
+    }
+
+    .invoice-wrapper {
+      max-width: 1100px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 32px;
+      box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.15), 0 10px 20px -8px rgba(0, 0, 0, 0.03);
+      padding: 2rem 2.5rem;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(210, 180, 140, 0.15);
+    }
+
+    h1, h2, h3, h4, p, span, div, input, textarea, button {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .gold-text { color: #b8860b; }
+    .gold-bg { background: #b8860b; }
+    .border-gold { border-color: #d4af37; }
+
+    .card-premium {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+      border: 1px solid #f0ede8;
+      transition: box-shadow 0.15s;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-premium:hover {
+      box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.08);
+    }
+
+    .header-premium {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.8rem;
+      border-bottom: 1px solid #eae7e0;
+      padding-bottom: 1.2rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .logo-placeholder {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      background: #f8f6f2;
+      border: 2px dashed #c9b99a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.2s;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .logo-placeholder:hover {
+      border-color: #b8860b;
+      background: #fcf9f4;
+    }
+
+    .logo-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .logo-placeholder i {
+      font-size: 2rem;
+      color: #b8860b;
+      opacity: 0.5;
+    }
+
+    .logo-upload-input {
+      display: none;
+    }
+
+    .titulo-factura {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(145deg, #1e1e2a, #3a3a4a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-right: 0.5rem;
+      color: #2a2a3a;
+    }
+
+    .factura-edit-group {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+    .factura-edit-group input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #e0d9ce;
+  padding: 0.3rem 0.2rem;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: 0.2s;
+  width: auto;
+  min-width: 100px;
+  color: #1e1e2a;
+
+  flex-shrink: 0;
+}
+
+    .factura-edit-group input:focus {
+      outline: none;
+      border-bottom-color: #b8860b;
+    }
+
+    .factura-edit-group .input-sm {
+      min-width: 70px;
+      width: 100px;
+    }
+
+    .dos-columnas {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+    }
+
+    @media (max-width: 700px) {
+      .dos-columnas {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .data-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .data-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+      border-bottom: 1px dashed #eeebe6;
+      padding-bottom: 0.3rem;
+    }
+
+    .data-row label {
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #7a6e5a;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    .data-row input {
+      border: none;
+      background: transparent;
+      padding: 0.2rem 0.2rem;
+      font-size: 0.95rem;
+      width: 100%;
+      color: #1e1e2a;
+      font-weight: 450;
+    }
+
+    .data-row input:focus {
+      outline: none;
+      background: #fcfaf6;
+      border-radius: 6px;
+      padding-left: 6px;
+    }
+
+    .data-row input::placeholder {
+      color: #b7ad9a;
+      font-weight: 300;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    table.invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    table.invoice-table th {
+      text-align: left;
+      padding: 0.7rem 0.3rem 0.7rem 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #4d4539;
+      border-bottom: 2px solid #dfd8cc;
+    }
+
+    table.invoice-table td {
+      padding: 0.5rem 0.3rem 0.5rem 0;
+      border-bottom: 1px solid #edebe6;
+      vertical-align: middle;
+    }
+
+    table.invoice-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .invoice-table input {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 0.25rem 0.2rem;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      transition: 0.1s;
+      color: #1e1e2a;
+    }
+
+    .invoice-table input:focus {
+      outline: none;
+      background: #f6f3ed;
+      box-shadow: 0 0 0 2px #e4dccc;
+    }
+
+    .invoice-table input[type="number"] {
+      max-width: 90px;
+    }
+
+    .invoice-table .desc-input {
+      min-width: 130px;
+    }
+
+    .accion-col {
+      text-align: center;
+      width: 40px;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: none;
+      color: #ac9f8a;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.2s;
+      padding: 0.2rem 0.5rem;
+      border-radius: 30px;
+    }
+
+    .btn-icon:hover {
+      color: #b8860b;
+      background: #f3efe8;
+    }
+
+    .btn-icon.danger:hover {
+      color: #c0392b;
+      background: #fce9e6;
+    }
+
+    .table-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .btn-outline-gold {
+      background: transparent;
+      border: 1.5px solid #b8860b;
+      color: #b8860b;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-outline-gold:hover {
+      background: #b8860b;
+      color: #fff;
+      box-shadow: 0 8px 14px -6px rgba(184, 134, 11, 0.25);
+    }
+
+    .totales-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+      padding-top: 0.5rem;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      max-width: 300px;
+      margin-left: auto;
+      font-size: 1rem;
+    }
+
+    .total-row span:first-child {
+      font-weight: 500;
+      color: #4d4539;
+      width: 100px;
+      text-align: right;
+      margin-right: 1.5rem;
+    }
+
+    .total-row .total-valor {
+      font-weight: 600;
+      min-width: 100px;
+      text-align: right;
+      color: #1e1e2a;
+    }
+
+    .total-row.total-final {
+      font-size: 1.3rem;
+      border-top: 2px solid #b8860b;
+      padding-top: 0.5rem;
+      margin-top: 0.3rem;
+      font-weight: 700;
+      color: #1e1e2a;
+    }
+
+    .total-row.total-final .total-valor {
+      color: #b8860b;
+    }
+
+    .obs-firma {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 1.8rem 0 1rem;
+      align-items: flex-start;
+    }
+
+    .obs-area {
+      flex: 2;
+      min-width: 200px;
+    }
+
+    .obs-area .obs-title {
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #b8860b;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .obs-area textarea {
+      width: 100%;
+      border: 1px solid #e1dad0;
+      border-radius: 16px;
+      padding: 0.8rem 1rem;
+      background: #fcfaf7;
+      resize: vertical;
+      font-size: 0.9rem;
+      color: #1e1e2a;
+      transition: 0.15s;
+      min-height: 70px;
+    }
+
+    .obs-area textarea:focus {
+      outline: none;
+      border-color: #b8860b;
+      box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.08);
+    }
+
+    .firma-sello {
+      flex: 1;
+      display: flex;
+      gap: 1.8rem;
+      justify-content: flex-start;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+
+    .firma-box, .sello-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      min-width: 120px;
+      flex: 1;
+    }
+
+    .firma-box .firma-label, .sello-box .sello-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #7a6e5a;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    .firma-box input, .sello-box input {
+      width: 100%;
+      border: none;
+      border-bottom: 2px solid #d4cdc0;
+      background: transparent;
+      padding: 0.3rem 0.2rem;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #1e1e2a;
+      transition: 0.2s;
+    }
+
+    .firma-box input:focus, .sello-box input:focus {
+      outline: none;
+      border-bottom-color: #b8860b;
+    }
+
+    .firma-box .firma-upload, .sello-box .sello-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+      width: 100%;
+    }
+
+    .firma-box .firma-upload label, .sello-box .sello-upload label {
+      font-size: 0.65rem;
+      color: #b8860b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: #f8f6f2;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      border: 1px solid #e1dad0;
+      transition: 0.15s;
+    }
+
+    .firma-box .firma-upload label:hover, .sello-box .sello-upload label:hover {
+      background: #f3efe8;
+      border-color: #b8860b;
+    }
+
+    .firma-box .firma-upload input, .sello-box .sello-upload input {
+      display: none;
+    }
+
+    .firma-box .firma-preview, .sello-box .sello-preview {
+      max-width: 100px;
+      max-height: 60px;
+      object-fit: contain;
+      margin-top: 0.2rem;
+      border-radius: 8px;
+      border: 1px solid #e1dad0;
+      padding: 0.2rem;
+      background: #fff;
+      display: none;
+    }
+
+    .pdf-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+
+    .btn-pdf {
+      background: #1e1e2a;
+      border: none;
+      color: #fff;
+      padding: 0.9rem 2.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-pdf:hover {
+      background: #b8860b;
+      transform: scale(1.01);
+      box-shadow: 0 16px 28px -10px rgba(184, 134, 11, 0.3);
+    }
+
+    @media (max-width: 580px) {
+      .invoice-wrapper {
+        padding: 1.2rem;
+      }
+      .header-premium {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+      .logo-area {
+        width: 100%;
+      }
+      .factura-edit-group {
+        width: 100%;
+        gap: 0.4rem;
+      }
+      .factura-edit-group input {
+        min-width: 70px;
+        font-size: 0.9rem;
+      }
+      .titulo-factura {
+        font-size: 2rem;
+      }
+      .firma-sello {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    .text-gold { color: #b8860b; }
+    .fw-600 { font-weight: 600; }
+    .mt-1 { margin-top: 0.6rem; }
+    .mb-0 { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+<div class="invoice-wrapper" id="invoiceApp">
+  <div class="header-premium">
+    <div class="logo-area">
+      <div class="logo-placeholder" id="logoPlaceholder" title="Haz clic para subir logo">
+        <i class="fas fa-crown" id="logoIcon"></i>
+        <img id="logoImg" style="display:none;" alt="Logo">
+      </div>
+      <input type="file" id="logoUpload" class="logo-upload-input" accept="image/*">
+      <span class="titulo-factura">FACTURA</span>
+    </div>
+    <div class="factura-edit-group">
+      <input type="text" id="empresaNombre" placeholder="Empresa" value="">
+      <input type="text" id="slogan" placeholder="Eslogan" value="">
+      <input type="text" id="facturaNum" placeholder="N° Factura" value="" class="input-sm">
+      <input type="date" id="facturaFecha" value="" class="input-sm" style="width:140px;">
+    </div>
+  </div>
+
+  <div class="dos-columnas">
+    <div class="card-premium">
+      <h4 style="margin-bottom: 0.6rem; font-weight:600; letter-spacing:0.02em; color:#1e1e2a;"><i class="fas fa-store-alt" style="color:#b8860b; margin-right:6px;"></i>Negocio</h4>
+      <div class="data-grid">
+        <div class="data-row"><label>Empresa</label><input type="text" id="negocioEmpresa" placeholder="Nombre" value=""></div>
+        <div class="data-row"><label>Dirección</label><input type="text" id="negocioDireccion" placeholder="Calle y número" value=""></div>
+        <div class="data-row"><label>Teléfono</label><input type="text" id="negocioTelefono" placeholder="Teléfono" value=""></div>
+        <div class="data-row"><label>Correo</label><input type="email" id="negocioCorreo" placeholder="correo@empresa" value=""></div>
+        <div class="data-row"><label>NIT / RUC</label><input type="text" id="negocioNit" placeholder="NIT" value=""></div>
+      </div>
+    </div>
+    <div class="card-premium">
+      <h4 style="margin-bottom: 0.6rem; font-weight:600; letter-spacing:0.02em; color:#1e1e2a;"><i class="fas fa-user-circle" style="color:#b8860b; margin-right:6px;"></i>Cliente</h4>
+      <div class="data-grid">
+        <div class="data-row"><label>Cliente</label><input type="text" id="clienteNombre" placeholder="Nombre" value=""></div>
+        <div class="data-row"><label>Dirección</label><input type="text" id="clienteDireccion" placeholder="Dirección" value=""></div>
+        <div class="data-row"><label>Teléfono</label><input type="text" id="clienteTelefono" placeholder="Teléfono" value=""></div>
+        <div class="data-row"><label>Correo</label><input type="email" id="clienteCorreo" placeholder="correo@cliente" value=""></div>
+        <div class="data-row"><label>Identificación</label><input type="text" id="clienteId" placeholder="ID / RUC" value=""></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-premium" style="padding-bottom: 0.8rem;">
+    <h4 style="display:flex; justify-content:space-between; margin-bottom:0.3rem; font-weight:600; color:#1e1e2a;">
+      <span><i class="fas fa-list-ul" style="color:#b8860b; margin-right:8px;"></i>Detalle de productos</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="invoice-table" id="productTable">
+        <thead>
+          <tr>
+            <th style="width:70px;">Cantidad</th>
+            <th style="min-width:120px;">Descripción</th>
+            <th style="width:120px; text-align:right; padding-right:10px;">Precio Unit.</th>
+            <th style="width:110px; text-align:right; padding-right:5px;">Total</th>
+            <th style="width:40px;">Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <button class="btn-outline-gold" id="addRowBtn"><i class="fas fa-plus-circle"></i> Añadir línea</button>
+      <button class="btn-outline-gold" id="removeRowBtn" style="border-color:#a08974; color:#6b5d4a;"><i class="fas fa-trash-alt"></i> Eliminar línea</button>
+    </div>
+  </div>
+
+  <div class="card-premium" style="padding: 1rem 1.5rem;">
+    <div class="totales-grid">
+      <div class="total-row"><span>Subtotal</span><span class="total-valor" id="subtotalDisplay">$0.00</span></div>
+      <div class="total-row">
+    <span>
+        Impuestos
+        <input
+    type="number"
+    id="taxRate"
+    value="0"
+    min="0"
+    step="0.01"
+    style="
+        width:55px;
+        text-align:center;
+        border:none;
+        background:transparent;
+        font-weight:600;
+        font-size:0.95rem;
+        color:#1e1e2a;
+        outline:none;
+        appearance:textfield;
+        -webkit-appearance:none;
+        -moz-appearance:textfield;
+    ">
+        %
+    </span>
+
+    <span class="total-valor" id="taxDisplay">$0.00</span>
+</div>
+      <div class="total-row total-final"><span>Total General</span><span class="total-valor" id="totalDisplay">$0.00</span></div>
+    </div>
+  </div>
+
+  <div class="obs-firma">
+    <div class="obs-area">
+      <div class="obs-title"><i class="fas fa-pencil-alt"></i> OBSERVACIONES</div>
+      <textarea id="observaciones" placeholder="Observaciones o notas adicionales…"></textarea>
+    </div>
+    <div class="firma-sello">
+      <div class="firma-box">
+        <span class="firma-label">Firma autorizada</span>
+        <input type="text" id="firmaTexto" placeholder="Nombre / Firma" value="">
+        <div class="firma-upload">
+          <label for="firmaUpload"><i class="fas fa-image"></i> Subir firma</label>
+          <input type="file" id="firmaUpload" accept="image/*">
+          <img id="firmaPreview" class="firma-preview" alt="Firma">
+        </div>
+      </div>
+      <div class="sello-box">
+        <span class="sello-label">Sello</span>
+        <input type="text" id="selloTexto" placeholder="Sello / Empresa" value="">
+        <div class="sello-upload">
+          <label for="selloUpload"><i class="fas fa-image"></i> Subir sello</label>
+          <input type="file" id="selloUpload" accept="image/*">
+          <img id="selloPreview" class="sello-preview" alt="Sello">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pdf-actions">
+    <button class="btn-pdf" id="pdfBtn"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    const tbody = document.getElementById('tableBody');
+    const addBtn = document.getElementById('addRowBtn');
+    const removeBtn = document.getElementById('removeRowBtn');
+    const subtotalSpan = document.getElementById('subtotalDisplay');
+    const taxSpan = document.getElementById('taxDisplay');
+    const totalSpan = document.getElementById('totalDisplay');
+    const taxRateInput = document.getElementById('taxRate');
+
+    const logoPlaceholder = document.getElementById('logoPlaceholder');
+    const logoInput = document.getElementById('logoUpload');
+    const logoImg = document.getElementById('logoImg');
+    const logoIcon = document.getElementById('logoIcon');
+
+    const firmaUpload = document.getElementById('firmaUpload');
+    const firmaPreview = document.getElementById('firmaPreview');
+    const selloUpload = document.getElementById('selloUpload');
+    const selloPreview = document.getElementById('selloPreview');
+
+    function createRow(cantidad = 1, descripcion = '', precio = 0.00) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="number" class="cantidad-input" value="${cantidad}" min="0" step="1"></td>
+        <td><input type="text" class="desc-input" value="${descripcion}" placeholder="Descripción"></td>
+        <td style="text-align:right; padding-right:10px;"><input type="number" class="precio-input" value="${precio.toFixed(2)}" min="0" step="0.50" style="text-align:right;"></td>
+        <td style="text-align:right; padding-right:5px;"><span class="fila-total">${(cantidad * precio).toFixed(2)}</span></td>
+        <td class="accion-col"><button class="btn-icon danger remove-row-btn"><i class="fas fa-times-circle"></i></button></td>
+      `;
+      const cantidadInput = tr.querySelector('.cantidad-input');
+      const precioInput = tr.querySelector('.precio-input');
+      const totalSpanFila = tr.querySelector('.fila-total');
+      
+      function updateFila() {
+        const qty = parseFloat(cantidadInput.value) || 0;
+        const price = parseFloat(precioInput.value) || 0;
+        const total = qty * price;
+        totalSpanFila.textContent = total.toFixed(2);
+        updateTotales();
+      }
+
+      cantidadInput.addEventListener('input', updateFila);
+      precioInput.addEventListener('input', updateFila);
+      
+      const removeRowBtn = tr.querySelector('.remove-row-btn');
+      removeRowBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (tbody.children.length > 1) {
+          tr.remove();
+          updateTotales();
+        } else {
+          alert('Debe haber al menos una línea de producto.');
+        }
+      });
+
+      return tr;
+    }
+
+    function updateTotales() {
+      let subtotal = 0;
+      const filas = tbody.querySelectorAll('tr');
+      filas.forEach(row => {
+        const totalSpan = row.querySelector('.fila-total');
+        if (totalSpan) {
+          subtotal += parseFloat(totalSpan.textContent) || 0;
+        }
+      });
+      const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+      const tax = subtotal * (taxRate / 100);
+      const total = subtotal + tax;
+      subtotalSpan.textContent = '$' + subtotal.toFixed(2);
+      taxSpan.textContent = '$' + tax.toFixed(2);
+      totalSpan.textContent = '$' + total.toFixed(2);
+    }
+
+    function initRows() {
+      tbody.innerHTML = '';
+      tbody.appendChild(createRow(1, '', 0.00));
+      updateTotales();
+    }
+    initRows();
+taxRateInput.addEventListener('input', updateTotales);
+
+    addBtn.addEventListener('click', function() {
+      tbody.appendChild(createRow(1, '', 0.00));
+      updateTotales();
+    });
+
+    removeBtn.addEventListener('click', function() {
+      const filas = tbody.querySelectorAll('tr');
+      if (filas.length > 1) {
+        filas[filas.length - 1].remove();
+        updateTotales();
+      } else {
+        alert('Mínimo una línea de producto.');
+      }
+    });
+
+    logoPlaceholder.addEventListener('click', function() {
+      logoInput.click();
+    });
+
+    logoInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          logoImg.src = ev.target.result;
+          logoImg.style.display = 'block';
+          logoIcon.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    firmaUpload.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          firmaPreview.src = ev.target.result;
+          firmaPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    selloUpload.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          selloPreview.src = ev.target.result;
+          selloPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById('pdfBtn').addEventListener('click', function() {
+      if (typeof html2canvas === 'undefined' || typeof jsPDF === 'undefined') {
+        const script1 = document.createElement('script');
+        script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        script1.onload = function() {
+          const script2 = document.createElement('script');
+          script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+          script2.onload = function() {
+            generarPDF();
+          };
+          document.head.appendChild(script2);
+        };
+        document.head.appendChild(script1);
+      } else {
+        generarPDF();
+      }
+    });
+
+    function generarPDF() {
+      const wrapper = document.getElementById('invoiceApp');
+      
+      const actions = wrapper.querySelector('.table-actions');
+      const pdfActions = wrapper.querySelector('.pdf-actions');
+      const removeBtns = wrapper.querySelectorAll('.remove-row-btn');
+      const addBtnOriginal = wrapper.querySelector('#addRowBtn');
+      const removeBtnOriginal = wrapper.querySelector('#removeRowBtn');
+      
+      const actionsDisplay = actions ? actions.style.display : '';
+      const pdfDisplay = pdfActions ? pdfActions.style.display : '';
+      const removeBtnsDisplay = [];
+      removeBtns.forEach((btn, i) => {
+        removeBtnsDisplay[i] = btn.style.display;
+        btn.style.display = 'none';
+      });
+      if (actions) actions.style.display = 'none';
+      if (pdfActions) pdfActions.style.display = 'none';
+      if (addBtnOriginal) addBtnOriginal.style.display = 'none';
+      if (removeBtnOriginal) removeBtnOriginal.style.display = 'none';
+      
+      const logoIconEl = wrapper.querySelector('#logoIcon');
+      if (logoIconEl) logoIconEl.style.display = 'none';
+      
+      // Obtener dimensiones reales del contenedor
+      const wrapperWidth = wrapper.scrollWidth;
+      const wrapperHeight = wrapper.scrollHeight;
+      
+      html2canvas(wrapper, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        width: wrapperWidth,
+        height: wrapperHeight,
+        windowWidth: wrapperWidth,
+        windowHeight: wrapperHeight,
+        onclone: function(doc) {
+          const elements = doc.querySelectorAll('.card-premium');
+          elements.forEach(el => {
+            el.style.boxShadow = '0 8px 20px -6px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02)';
+            el.style.border = '1px solid #f0ede8';
+          });
+          const titulo = doc.querySelector('.titulo-factura');
+          if (titulo) {
+            titulo.style.background = 'none';
+            titulo.style.color = '#2a2a3a';
+            titulo.style.webkitTextFillColor = '#2a2a3a';
+          }
+        }
+      }).then(function(canvas) {
+        if (actions) actions.style.display = actionsDisplay || '';
+        if (pdfActions) pdfActions.style.display = pdfDisplay || '';
+        removeBtns.forEach((btn, i) => {
+          btn.style.display = removeBtnsDisplay[i] || '';
+        });
+        if (addBtnOriginal) addBtnOriginal.style.display = '';
+        if (removeBtnOriginal) removeBtnOriginal.style.display = '';
+        if (logoIconEl) logoIconEl.style.display = '';
+        
+        const { jsPDF } = window.jspdf;
+
+const imgWidth = canvas.width;
+const imgHeight = canvas.height;
+
+// Conversión de píxeles a milímetros
+const pxToMm = 0.264583;
+
+const pdfWidth = imgWidth * pxToMm;
+const pdfHeight = imgHeight * pxToMm;
+
+const pdf = new jsPDF({
+  orientation: pdfWidth > pdfHeight ? 'l' : 'p',
+  unit: 'mm',
+  format: [pdfWidth, pdfHeight]
+});
+
+pdf.addImage(
+  canvas,
+  'PNG',
+  0,
+  0,
+  pdfWidth,
+  pdfHeight
+);
+
+pdf.save('factura-premium.pdf');
+        
+        pdf.save('factura-premium.pdf');
+      }).catch(function(err) {
+        console.error(err);
+        alert(err.message);
+        if (actions) actions.style.display = actionsDisplay || '';
+        if (pdfActions) pdfActions.style.display = pdfDisplay || '';
+        removeBtns.forEach((btn, i) => {
+          btn.style.display = removeBtnsDisplay[i] || '';
+        });
+        if (addBtnOriginal) addBtnOriginal.style.display = '';
+        if (removeBtnOriginal) removeBtnOriginal.style.display = '';
+        if (logoIconEl) logoIconEl.style.display = '';
+      });
+    }
+
+    const fechaInput = document.getElementById('facturaFecha');
+    if (!fechaInput.value) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      fechaInput.value = `${yyyy}-${mm}-${dd}`;
+    }
+
+  })();
+</script>
+</body>
+</html>
